@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>疼痛门诊患者小助手</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            overflow: hidden;
+        }
+
+        .app-container {
+            position: relative;
+            width: 390px;
+            height: 844px;
+            overflow: hidden;
+        }
+
+        .page {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(150deg, #ffffff 0%, #f0f4f8 100%);
+            border-radius: 40px;
+            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .page.hidden {
+            transform: translateX(100%);
+        }
+
+        .background-decoration {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.1;
+            background: 
+                radial-gradient(circle at 10% 20%, #2196F3 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, #03A9F4 0%, transparent 20%),
+                radial-gradient(circle at 50% 50%, #4CAF50 0%, transparent 30%);
+        }
+
+        .content {
+            position: relative;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 40px;
+            padding: 40px 20px;
+        }
+
+        .assessment-content {
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            padding-top: 80px;
+        }
+
+        .logo-section {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin-bottom: 20px;
+        }
+
+        .logo-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-circle {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border: 2px dashed #2196F3;
+            border-radius: 50%;
+            animation: rotate 20s linear infinite;
+        }
+
+        .logo-inner-circle {
+            position: absolute;
+            width: 80%;
+            height: 80%;
+            border: 1px solid rgba(33, 150, 243, 0.3);
+            border-radius: 50%;
+            animation: rotate 15s linear infinite reverse;
+        }
+
+        .logo-pulse {
+            position: absolute;
+            width: 90%;
+            height: 90%;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(33, 150, 243, 0.1) 0%, transparent 70%);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .logo {
+            width: 60%;
+            height: 60%;
+            position: relative;
+            z-index: 2;
+            background: transparent;
+            border-radius: 50%;
+        }
+
+        .title {
+            color: #333;
+            font-size: 28px;
+            font-weight: 600;
+            text-align: center;
+            margin: 20px 0;
+            background: linear-gradient(45deg, #2196F3, #4CAF50);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+        }
+
+        .section-title {
+            color: #333;
+            font-size: 24px;
+            font-weight: 600;
+            margin: 10px 0;
+            padding: 0 20px;
+        }
+
+        .buttons-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 0 30px;
+        }
+
+        .btn {
+            position: relative;
+            padding: 20px;
+            border: none;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #2196F3, #03A9F4);
+            color: white;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 65px;
+        }
+
+        .btn.disabled {
+            background: linear-gradient(135deg, #ccc, #999);
+            cursor: not-allowed;
+            opacity: 0.7;
+        }
+
+        .btn.disabled:hover {
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn.disabled::before {
+            display: none;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg,
+                transparent,
+                rgba(255, 255, 255, 0.2),
+                transparent
+            );
+            transition: 0.5s;
+        }
+
+        .btn:hover::before {
+            left: 100%;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(33, 150, 243, 0.3);
+        }
+
+        .btn:active {
+            transform: translateY(1px);
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            background: rgba(33, 150, 243, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .back-btn::before {
+            content: '';
+            width: 12px;
+            height: 12px;
+            border-left: 3px solid #2196F3;
+            border-bottom: 3px solid #2196F3;
+            transform: rotate(45deg);
+            margin-left: 5px;
+        }
+
+        .back-btn:hover {
+            background: rgba(33, 150, 243, 0.2);
+            transform: scale(1.1);
+        }
+
+        .iframe-container {
+            width: 100%;
+            height: calc(100% - 70px);
+            margin-top: 70px;
+            border: none;
+        }
+
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .floating-dots {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .dot {
+            position: absolute;
+            width: 6px;
+            height: 6px;
+            background: #2196F3;
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+
+        .dot:nth-child(1) { top: 10%; left: 10%; animation: float 6s infinite; }
+        .dot:nth-child(2) { top: 20%; right: 20%; animation: float 8s infinite; }
+        .dot:nth-child(3) { bottom: 30%; left: 15%; animation: float 7s infinite; }
+        .dot:nth-child(4) { bottom: 15%; right: 10%; animation: float 5s infinite; }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.95); opacity: 0.5; }
+            50% { transform: scale(1.05); opacity: 0.8; }
+            100% { transform: scale(0.95); opacity: 0.5; }
+        }
+
+        @keyframes float {
+            0% { transform: translate(0, 0); }
+            50% { transform: translate(10px, 10px); }
+            100% { transform: translate(0, 0); }
+        }
+
+        /* Loading 效果样式 */
+        .loading-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #fff;
+            z-index: 5;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #2196F3;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            position: absolute;
+            top: 60%;
+            color: #2196F3;
+            font-size: 16px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 首页 -->
+        <div class="page" id="home-page">
+            <div class="background-decoration"></div>
+            <div class="floating-dots">
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+                <div class="dot"></div>
+            </div>
+            <div class="content">
+                <div class="logo-section">
+                    <div class="logo-container">
+                        <div class="logo-circle"></div>
+                        <div class="logo-inner-circle"></div>
+                        <div class="logo-pulse"></div>
+                        <img src="./static/images/logo.png" alt="logo" class="logo">
+                    </div>
+                </div>
+                <h1 class="title">疼痛门诊患者小助手</h1>
+                <div class="buttons-container">
+                    <button class="btn" onclick="navigateTo('education-page')">健康教育及就医指导</button>
+                    <button class="btn" onclick="navigateTo('assessment-page')">进行疼痛评估</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 健康教育页面 -->
+        <div class="page hidden" id="education-page">
+            <div class="back-btn" onclick="navigateTo('home-page')"></div>
+            <div class="iframe-container">
+                <div class="loading-container" id="education-loading">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">加载中...</div>
+                </div>
+                <iframe 
+                    src="http://www.hulichatbot.xyz/chat/a1DdYThvLUeU4uwV" 
+                    onload="hideLoading('education-loading')"
+                ></iframe>
+            </div>
+        </div>
+
+        <!-- BPI量表页面 -->
+        <div class="page hidden" id="bpi-page">
+            <div class="back-btn" onclick="navigateTo('assessment-page')"></div>
+            <div class="iframe-container">
+                <div class="loading-container" id="bpi-loading">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">加载中...</div>
+                </div>
+                <iframe 
+                    src="https://egewdcr24f.feishu.cn/share/base/form/shrcnXQZ6I3cIWRnZToAyNHbaZg" 
+                    onload="hideLoading('bpi-loading')"
+                ></iframe>
+            </div>
+        </div>
+
+        <!-- 疼痛评估页面 -->
+        <div class="page hidden" id="assessment-page">
+            <div class="background-decoration"></div>
+            <div class="back-btn" onclick="navigateTo('home-page')"></div>
+            <div class="assessment-content">
+                <h2 class="section-title">通用疼痛评估</h2>
+                <div class="buttons-container">
+                    <button class="btn" onclick="navigateTo('bpi-page')">
+                        简明疼痛评估表(BPI)
+                    </button>
+                </div>
+
+                <h2 class="section-title">神经病理性疼痛</h2>
+                <div class="buttons-container">
+                    <button class="btn disabled">DN4量表</button>
+                    <button class="btn disabled">painDETECT量表</button>
+                </div>
+
+                <h2 class="section-title">特定部位疼痛</h2>
+                <div class="buttons-container">
+                    <button class="btn disabled">WOMAC量表</button>
+                    <button class="btn disabled">Roland-Morris量表</button>
+                    <button class="btn disabled">颈部功能障碍指数(NDI)</button>
+                </div>
+
+                <h2 class="section-title">心理社会评估</h2>
+                <div class="buttons-container">
+                    <button class="btn disabled">疼痛灾难化量表(PCS)</button>
+                    <button class="btn disabled">疼痛自我效能量表(PSEQ)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 页面加载完成后设置初始状态
+        document.addEventListener('DOMContentLoaded', function() {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                if (page.id !== 'home-page') {
+                    page.classList.add('hidden');
+                }
+            });
+        });
+
+        function navigateTo(pageId) {
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => {
+                if (page.id === pageId) {
+                    page.classList.remove('hidden');
+                } else {
+                    page.classList.add('hidden');
+                }
+            });
+        }
+
+        function hideLoading(loadingId) {
+            const loadingElement = document.getElementById(loadingId);
+            if (loadingElement) {
+                loadingElement.style.opacity = '0';
+                setTimeout(() => {
+                    loadingElement.style.display = 'none';
+                }, 300);
+            }
+        }
+    </script>
+</body>
+</html>
