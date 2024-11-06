@@ -370,6 +370,35 @@
                 min-height: 50px;
             }
         }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #fff;
+            z-index: 1000;
+            transition: transform 0.3s ease-in-out;
+            transform: translateX(100%);
+        }
+
+        .modal.show {
+            transform: translateX(0);
+        }
+
+        .modal-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        #chatFrame {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
     </style>
 </head>
 <body>
@@ -394,7 +423,7 @@
                 </div>
                 <h1 class="title">疼痛门诊患者小助手</h1>
                 <div class="buttons-container">
-                    <button class="btn" onclick="navigateTo('education-page')">健康教育及就医指导</button>
+                    <button class="btn" onclick="openChat()">健康教育就医指导</button>
                     <button class="btn" onclick="navigateTo('assessment-page')">进行疼痛评估</button>
                 </div>
             </div>
@@ -465,6 +494,14 @@
                     <button class="btn disabled">疼痛灾难化量表(PCS)</button>
                     <button class="btn disabled">疼痛自我效能量表(PSEQ)</button>
                 </div>
+            </div>
+        </div>
+
+        <!-- 添加模态窗口HTML -->
+        <div id="chatModal" class="modal">
+            <div class="modal-content">
+                <button class="back-btn" onclick="closeChat()"></button>
+                <iframe id="chatFrame" src=""></iframe>
             </div>
         </div>
     </div>
@@ -546,6 +583,25 @@
             startLoadingTimeout('education-loading');
             startLoadingTimeout('bpi-loading');
         });
+
+        function openChat() {
+            const modal = document.getElementById('chatModal');
+            modal.style.display = 'block';
+            // 使用 requestAnimationFrame 确保过渡效果正常工作
+            requestAnimationFrame(() => {
+                modal.classList.add('show');
+            });
+            document.getElementById('chatFrame').src = 'http://www.hulichatbot.xyz/chat/a1DdYThvLUeU4uwV';
+        }
+
+        function closeChat() {
+            const modal = document.getElementById('chatModal');
+            modal.classList.remove('show');
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.getElementById('chatFrame').src = '';
+            }, 300); // 等待过渡动画完成
+        }
     </script>
 </body>
 </html>
