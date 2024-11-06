@@ -318,6 +318,7 @@
             right: 0;
             bottom: 0;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             background: #fff;
@@ -334,10 +335,8 @@
         }
 
         .loading-text {
-            position: absolute;
-            top: 60%;
+            margin-top: 20px;
             color: #2196F3;
-            font-size: 16px;
         }
 
         @keyframes spin {
@@ -539,7 +538,7 @@
                 <h2 class="section-title">通用疼痛评估</h2>
                 <div class="buttons-container">
                     <button class="btn" onclick="navigateTo('bpi-page')">
-                        简明疼评估表(BPI)
+                        简明疼评估表（BPI）
                     </button>
                 </div>
 
@@ -553,13 +552,13 @@
                 <div class="buttons-container">
                     <button class="btn disabled">WOMAC量表</button>
                     <button class="btn disabled">Roland-Morris量表</button>
-                    <button class="btn disabled">颈部功能障碍指数(NDI)</button>
+                    <button class="btn disabled">颈部功能障碍指数（NDI）</button>
                 </div>
 
                 <h2 class="section-title">心理社会评估</h2>
                 <div class="buttons-container">
-                    <button class="btn disabled">疼痛灾难化量表(PCS)</button>
-                    <button class="btn disabled">疼痛自我效能量表(PSEQ)</button>
+                    <button class="btn disabled">疼痛灾难化量表（PCS）</button>
+                    <button class="btn disabled">疼痛自我效能量表（PSEQ）</button>
                 </div>
             </div>
         </div>
@@ -568,6 +567,13 @@
         <div id="chatModal" class="modal">
             <div class="modal-content">
                 <button class="back-btn" onclick="closeChat()"></button>
+                <div class="loading-container" id="chat-loading">
+                    <div class="loading-spinner"></div>
+                    <div class="loading-text">加载中...</div>
+                    <div class="loading-error" style="display: none; color: #ff4444; margin-top: 20px; text-align: center;">
+                        页面加载失败，请<span class="retry-btn" style="color: #2196F3; cursor: pointer;">重试</span>
+                    </div>
+                </div>
                 <iframe 
                     id="chatFrame"
                     src=""
@@ -658,12 +664,38 @@
 
         function openChat() {
             const modal = document.getElementById('chatModal');
+            const loading = document.getElementById('chat-loading');
+            
+            // 显示模态框
             modal.style.display = 'block';
-            // 使用 requestAnimationFrame 确保过渡效果正常工作
             requestAnimationFrame(() => {
                 modal.classList.add('show');
             });
-            document.getElementById('chatFrame').src = 'https://www.hulichatbot.xyz/chat/a1DdYThvLUeU4uwV';
+            
+            // 显示加载动画
+            loading.style.display = 'flex';
+            
+            // 加载聊天页面
+            document.getElementById('chatFrame').src = 'http://www.hulichatbot.xyz/chat/a1DdYThvLUeU4uwV';
+        }
+
+        function handleChatIframeLoad() {
+            const loading = document.getElementById('chat-loading');
+            loading.style.opacity = '0';
+            setTimeout(() => {
+                loading.style.display = 'none';
+            }, 300);
+        }
+
+        function handleChatIframeError() {
+            const loading = document.getElementById('chat-loading');
+            const spinner = loading.querySelector('.loading-spinner');
+            const text = loading.querySelector('.loading-text');
+            const error = loading.querySelector('.loading-error');
+            
+            spinner.style.display = 'none';
+            text.style.display = 'none';
+            error.style.display = 'block';
         }
 
         function closeChat() {
@@ -672,7 +704,18 @@
             setTimeout(() => {
                 modal.style.display = 'none';
                 document.getElementById('chatFrame').src = '';
-            }, 300); // 等待过渡动画完成
+                // 重置 loading 状态
+                const loading = document.getElementById('chat-loading');
+                const spinner = loading.querySelector('.loading-spinner');
+                const text = loading.querySelector('.loading-text');
+                const error = loading.querySelector('.loading-error');
+                
+                loading.style.display = 'none';
+                loading.style.opacity = '1';
+                spinner.style.display = 'block';
+                text.style.display = 'block';
+                error.style.display = 'none';
+            }, 300);
         }
     </script>
 </body>
