@@ -255,12 +255,16 @@
             height: calc(100% - 70px);
             margin-top: 70px;
             border: none;
+            position: relative;
         }
 
         iframe {
             width: 100%;
             height: 100%;
             border: none;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         .floating-dots {
@@ -372,10 +376,15 @@
                 <div class="loading-container" id="education-loading">
                     <div class="loading-spinner"></div>
                     <div class="loading-text">加载中...</div>
+                    <div class="loading-error" style="display: none; color: #ff4444; margin-top: 20px; text-align: center;">
+                        页面加载失败，请<span class="retry-btn" style="color: #2196F3; cursor: pointer;">重试</span>
+                    </div>
                 </div>
                 <iframe 
                     src="http://www.hulichatbot.xyz/chat/a1DdYThvLUeU4uwV" 
-                    onload="hideLoading('education-loading')"
+                    onload="handleIframeLoad('education-loading')"
+                    onerror="handleIframeError('education-loading')"
+                    id="education-iframe"
                 ></iframe>
             </div>
         </div>
@@ -430,6 +439,56 @@
     </div>
 
     <script>
+        const TIMEOUT_DURATION = 15000; // 15秒超时
+
+        function handleIframeLoad(loadingId) {
+            clearTimeout(window[loadingId + '_timeout']);
+            hideLoading(loadingId);
+        }
+
+        function handleIframeError(loadingId) {
+            showLoadingError(loadingId);
+        }
+
+        function showLoadingError(loadingId) {
+            const loadingElement = document.getElementById(loadingId);
+            const spinnerElement = loadingElement.querySelector('.loading-spinner');
+            const textElement = loadingElement.querySelector('.loading-text');
+            const errorElement = loadingElement.querySelector('.loading-error');
+            
+            spinnerElement.style.display = 'none';
+            textElement.style.display = 'none';
+            errorElement.style.display = 'block';
+            
+            // 添加重试按钮的点击事件
+            const retryBtn = errorElement.querySelector('.retry-btn');
+            retryBtn.onclick = () => {
+                spinnerElement.style.display = 'block';
+                textElement.style.display = 'block';
+                errorElement.style.display = 'none';
+                
+                const iframe = document.getElementById(loadingId.replace('loading', 'iframe'));
+                iframe.src = iframe.src;
+                startLoadingTimeout(loadingId);
+            };
+        }
+
+        function startLoadingTimeout(loadingId) {
+            window[loadingId + '_timeout'] = setTimeout(() => {
+                showLoadingError(loadingId);
+            }, TIMEOUT_DURATION);
+        }
+
+        function hideLoading(loadingId) {
+            const loadingElement = document.getElementById(loadingId);
+            if (loadingElement) {
+                loadingElement.style.opacity = '0';
+                setTimeout(() => {
+                    loadingElement.style.display = 'none';
+                }, 300);
+            }
+        }
+
         // 页面加载完成后设置初始状态
         document.addEventListener('DOMContentLoaded', function() {
             const pages = document.querySelectorAll('.page');
@@ -451,15 +510,11 @@
             });
         }
 
-        function hideLoading(loadingId) {
-            const loadingElement = document.getElementById(loadingId);
-            if (loadingElement) {
-                loadingElement.style.opacity = '0';
-                setTimeout(() => {
-                    loadingElement.style.display = 'none';
-                }, 300);
-            }
-        }
+        // 页面加载完成后为所有 iframe 启动超时计时
+        document.addEventListener('DOMContentLoaded', function() {
+            startLoadingTimeout('education-loading');
+            startLoadingTimeout('bpi-loading');
+        });
     </script>
 </body>
 </html>
