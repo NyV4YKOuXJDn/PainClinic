@@ -401,18 +401,18 @@
         }
 
         /* 修改模态窗口中返回按钮的样式 */
-        .modal .back-btn {
-            position: fixed;  /* 改为 fixed 定位 */
-            top: env(safe-area-inset-top, 20px);  /* 适配刘海屏 */
+        #chatModal .back-btn {
+            position: fixed;
+            top: env(safe-area-inset-top, 20px);
             left: 20px;
-            z-index: 1001;  /* 确保在最上层 */
+            z-index: 1001;
             width: 40px;
             height: 40px;
             border-radius: 20px;
-            background: rgba(255, 255, 255, 0.9);  /* 半透明白色背景 */
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);  /* 添加阴影 */
-            backdrop-filter: blur(5px);  /* 背景模糊效果 */
-            -webkit-backdrop-filter: blur(5px);  /* Safari 支持 */
+            background: rgba(51, 51, 51, 0.9);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
             border: none;
             display: flex;
             align-items: center;
@@ -421,12 +421,12 @@
             transition: all 0.3s ease;
         }
 
-        .modal .back-btn::before {
+        #chatModal .back-btn::before {
             content: '';
             width: 10px;
             height: 10px;
-            border-left: 2px solid #333;
-            border-bottom: 2px solid #333;
+            border-left: 2px solid #fff;
+            border-bottom: 2px solid #fff;
             transform: rotate(45deg);
             margin-left: 5px;
         }
@@ -496,7 +496,7 @@
             </div>
         </div>
 
-        <!-- ��康教育页面 -->
+        <!-- 康教育页面 -->
         <div class="page hidden" id="education-page">
             <div class="back-btn" onclick="navigateTo('home-page')"></div>
             <div class="iframe-container">
@@ -539,7 +539,7 @@
                 <h2 class="section-title">通用疼痛评估</h2>
                 <div class="buttons-container">
                     <button class="btn" onclick="navigateTo('bpi-page')">
-                        简明疼痛评估表(BPI)
+                        简明疼评估表(BPI)
                     </button>
                 </div>
 
@@ -570,7 +570,7 @@
                 <button class="back-btn" onclick="closeChat()"></button>
                 <iframe 
                     id="chatFrame"
-                    src="https://www.hulichatbot.xyz/chat/a1DdYThvLUeU4uwV"
+                    src=""
                     onload="handleChatIframeLoad()"
                     onerror="handleChatIframeError()"
                 ></iframe>
@@ -663,7 +663,7 @@
             requestAnimationFrame(() => {
                 modal.classList.add('show');
             });
-            document.getElementById('chatFrame').src = 'http://www.hulichatbot.xyz/chat/a1DdYThvLUeU4uwV';
+            document.getElementById('chatFrame').src = 'https://www.hulichatbot.xyz/chat/a1DdYThvLUeU4uwV';
         }
 
         function closeChat() {
