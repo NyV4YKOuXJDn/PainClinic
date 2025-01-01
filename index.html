@@ -3,8 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>疼痛门诊患者小助手</title>
+    <title>京颐科技 - 2025事业部思考</title>
     <style>
+        :root {
+            --kyee-blue: #003B8F;
+            --kyee-orange: #F15A22;
+            --bg-color: #f8f9fa;
+            --card-bg: #ffffff;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes breathe {
+            0% { transform: scale(1); opacity: 0.3; }
+            50% { transform: scale(1.2); opacity: 0.7; }
+            100% { transform: scale(1); opacity: 0.3; }
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -12,711 +36,378 @@
         }
 
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            margin: 0;
-            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            line-height: 1.6;
+            color: #2c3e50;
+            background: var(--bg-color);
+            overflow-x: hidden;
             min-height: 100vh;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8eb 100%);
+            flex-direction: column;
         }
 
-        .app-container {
-            position: relative;
-            width: 100%;
-            max-width: 390px;
-            height: 100vh;
-            overflow: hidden;
+        .container {
+            max-width: 1200px;
             margin: 0 auto;
-        }
-
-        .page {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(150deg, #ffffff 0%, #f0f4f8 100%);
-            border-radius: 40px;
-            transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow-y: auto;
-            overflow-x: hidden;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .page.hidden {
-            transform: translateX(100%);
-        }
-
-        .background-decoration {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            opacity: 0.1;
-            background: 
-                radial-gradient(circle at 10% 20%, #2196F3 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, #03A9F4 0%, transparent 20%),
-                radial-gradient(circle at 50% 50%, #4CAF50 0%, transparent 30%);
-        }
-
-        .content {
+            padding: 1.5rem;
             position: relative;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 40px;
-            padding: 40px 20px;
-        }
-
-        .assessment-content {
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 30px;
-            padding-top: 80px;
-        }
-
-        .logo-section {
-            position: relative;
-            width: 200px;
-            height: 200px;
-            margin-bottom: 20px;
-        }
-
-        .logo-container {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .logo-circle {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border: 2px dashed #2196F3;
-            border-radius: 50%;
-            animation: rotate 20s linear infinite;
-        }
-
-        .logo-inner-circle {
-            position: absolute;
-            width: 80%;
-            height: 80%;
-            border: 1px solid rgba(33, 150, 243, 0.3);
-            border-radius: 50%;
-            animation: rotate 15s linear infinite reverse;
-        }
-
-        .logo-pulse {
-            position: absolute;
-            width: 90%;
-            height: 90%;
-            border-radius: 50%;
-            background: radial-gradient(circle, rgba(33, 150, 243, 0.1) 0%, transparent 70%);
-            animation: pulse 2s ease-in-out infinite;
-        }
-
-        .logo {
-            width: 60%;
-            height: 60%;
-            position: relative;
-            z-index: 2;
-            background: transparent;
-            border-radius: 50%;
+            flex: 1;
         }
 
         .title {
-            color: #333;
-            font-size: 28px;
-            font-weight: 600;
+            color: var(--kyee-blue);
+            font-size: 1.8em;
+            margin: 2rem 0 0.5rem;
             text-align: center;
-            margin: 20px 0;
-            background: linear-gradient(45deg, #2196F3, #4CAF50);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            position: relative;
+            animation: fadeInUp 1s ease-out;
         }
 
-        .section-title {
-            color: #333;
-            font-size: 24px;
-            font-weight: 600;
-            margin: 10px 0;
-            padding: 0 20px;
+        .subtitle {
+            color: #666;
+            font-size: 1.2em;
+            text-align: center;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s;
+            opacity: 0;
+            animation-fill-mode: forwards;
         }
 
-        .buttons-container {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            padding: 0 30px;
+        .matrix {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1.2s ease-out;
         }
 
-        .btn {
-            position: relative;
-            padding: 20px;
-            border: none;
-            border-radius: 15px;
-            background: linear-gradient(135deg, #2196F3, #03A9F4);
-            color: white;
-            font-size: 18px;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .matrix-section {
+            background: var(--card-bg);
+            border-radius: 12px;
             overflow: hidden;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .matrix-title {
+            color: var(--kyee-blue);
+            font-size: 1.4em;
+            padding: 1rem;
             text-align: center;
-            min-height: 65px;
+            background: rgba(0,59,143,0.1);
+            border-bottom: 2px solid var(--kyee-blue);
         }
 
-        .btn.disabled {
-            background: linear-gradient(135deg, #ccc, #999);
-            cursor: not-allowed;
-            opacity: 0.7;
-        }
-
-        .btn.disabled:hover {
-            transform: none;
-            box-shadow: none;
-        }
-
-        .btn.disabled::before {
-            display: none;
-        }
-
-        .btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
+        .matrix table {
             width: 100%;
-            height: 100%;
-            background: linear-gradient(
-                90deg,
-                transparent,
-                rgba(255, 255, 255, 0.2),
-                transparent
-            );
-            transition: 0.5s;
+            border-collapse: collapse;
         }
 
-        .btn:hover::before {
-            left: 100%;
+        .matrix td:first-child {
+            background: var(--kyee-blue);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            font-weight: 600;
         }
 
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(33, 150, 243, 0.3);
+        .matrix td {
+            padding: 1rem;
+            border: 1px solid #eee;
+            text-align: center;
+            background: var(--card-bg);
         }
 
-        .btn:active {
-            transform: translateY(1px);
+        .qa-section {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
         }
 
-        .back-btn {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            width: 50px;
-            height: 50px;
-            border-radius: 25px;
-            background: rgba(33, 150, 243, 0.1);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
+        .qa-card {
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
             transition: all 0.3s ease;
-            z-index: 10;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
-        .back-btn::before {
-            content: '';
-            width: 12px;
-            height: 12px;
-            border-left: 3px solid #2196F3;
-            border-bottom: 3px solid #2196F3;
-            transform: rotate(45deg);
-            margin-left: 5px;
+        .qa-card.visible {
+            animation: fadeInUp 0.8s ease-out forwards;
         }
 
-        .back-btn:hover {
-            background: rgba(33, 150, 243, 0.2);
-            transform: scale(1.1);
+        .qa-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 12px rgba(0,0,0,0.15);
         }
 
-        .iframe-container {
-            width: 100%;
-            flex: 1;
-            margin-top: 70px;
-            position: relative;
-            display: flex;
-            flex-direction: column;
+        .qa-card h3 {
+            color: var(--kyee-orange);
+            margin-bottom: 1rem;
+            font-size: 1.2em;
         }
 
-        iframe {
-            width: 100%;
-            flex: 1;
-            border: none;
-            position: relative;
-            min-height: 0;
+        .decoration {
+            position: fixed;
+            z-index: -1;
+            opacity: 0.3;
         }
 
-        .floating-dots {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
+        .decoration:nth-child(1) {
+            top: 10%;
+            left: 5%;
+            animation: breathe 4s infinite;
         }
 
-        .dot {
-            position: absolute;
-            width: 6px;
-            height: 6px;
-            background: #2196F3;
-            border-radius: 50%;
-            opacity: 0.2;
+        .decoration:nth-child(2) {
+            top: 30%;
+            right: 5%;
+            animation: breathe 4s infinite 1s;
         }
 
-        .dot:nth-child(1) { top: 10%; left: 10%; animation: float 6s infinite; }
-        .dot:nth-child(2) { top: 20%; right: 20%; animation: float 8s infinite; }
-        .dot:nth-child(3) { bottom: 30%; left: 15%; animation: float 7s infinite; }
-        .dot:nth-child(4) { bottom: 15%; right: 10%; animation: float 5s infinite; }
-
-        @keyframes rotate {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        .decoration:nth-child(3) {
+            bottom: 20%;
+            left: 10%;
+            animation: breathe 4s infinite 2s;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(0.95); opacity: 0.5; }
-            50% { transform: scale(1.05); opacity: 0.8; }
-            100% { transform: scale(0.95); opacity: 0.5; }
+        .decoration:nth-child(4) {
+            bottom: 40%;
+            right: 10%;
+            animation: breathe 4s infinite 3s;
         }
 
-        @keyframes float {
-            0% { transform: translate(0, 0); }
-            50% { transform: translate(10px, 10px); }
-            100% { transform: translate(0, 0); }
+        .footer {
+            margin-top: auto;
+            padding: 2rem;
+            text-align: center;
+            animation: fadeInUp 0.8s ease-out;
         }
 
-        /* Loading 效果样式 */
-        .loading-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: #fff;
-            z-index: 5;
+        .logo {
+            max-width: 150px;
+            height: auto;
+            display: block;
+            margin: 0 auto;
         }
 
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #2196F3;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
+        .matrix td.product-name {
+            color: var(--kyee-blue);
+            font-weight: 600;
+            background: var(--card-bg);
         }
 
-        .loading-text {
-            margin-top: 20px;
-            color: #2196F3;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* 针对小屏幕设备的适配 */
-        @media screen and (max-height: 700px) {
-            .app-container {
-                height: 100vh;
-            }
-            
-            .logo-section {
-                transform: scale(0.8);
-                margin-bottom: 10px;
+        @media (max-width: 768px) {
+            .container {
+                padding: 1rem;
             }
             
             .title {
-                font-size: 24px;
-                margin: 10px 0;
+                font-size: 1.5em;
+                margin: 1.5rem 0;
+            }
+
+            .matrix {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .matrix-section {
+                border-radius: 12px;
+                overflow-x: auto;
+                -webkit-overflow-scrolling: touch;
             }
             
-            .buttons-container {
-                gap: 15px;
+            .matrix td {
+                padding: 0.8rem;
+                font-size: 0.9em;
+                min-width: 120px;
             }
-            
-            .btn {
-                padding: 15px;
-                min-height: 50px;
+
+            .matrix td:first-child {
+                position: sticky;
+                left: 0;
+                z-index: 1;
+                border-right: 2px solid #fff;
             }
-        }
 
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #fff;
-            z-index: 1000;
-            transition: transform 0.3s ease-in-out;
-            transform: translateX(100%);
-        }
-
-        .modal.show {
-            transform: translateX(0);
-        }
-
-        .modal-content {
-            position: relative;
-            width: 100%;
-            height: 100%;
-        }
-
-        #chatFrame {
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* 修改模态窗口中返回按钮的样式 */
-        #chatModal .back-btn {
-            position: fixed;
-            top: env(safe-area-inset-top, 20px);
-            left: 20px;
-            z-index: 1001;
-            width: 40px;
-            height: 40px;
-            border-radius: 20px;
-            background: rgba(51, 51, 51, 0.9);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            border: none;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        #chatModal .back-btn::before {
-            content: '';
-            width: 10px;
-            height: 10px;
-            border-left: 2px solid #fff;
-            border-bottom: 2px solid #fff;
-            transform: rotate(45deg);
-            margin-left: 5px;
-        }
-
-        .modal .back-btn:hover {
-            background: rgba(255, 255, 255, 1);
-            transform: scale(1.05);
-        }
-
-        /* 添加安全区域适配 */
-        @supports (padding-top: env(safe-area-inset-top)) {
-            .modal .back-btn {
-                top: max(env(safe-area-inset-top), 20px);
-                left: max(env(safe-area-inset-left), 20px);
+            .qa-section {
+                grid-template-columns: 1fr;
+                gap: 1rem;
             }
-        }
 
-        /* 针对不同设备的适配 */
-        @media screen and (max-width: 390px) {
-            .modal .back-btn {
-                top: 15px;
-                left: 15px;
-                width: 36px;
-                height: 36px;
+            .qa-card {
+                padding: 1.2rem;
             }
-        }
 
-        /* 深色主题的返回按钮 */
-        .modal .back-btn {
-            background: rgba(51, 51, 51, 0.9);
-        }
+            .decoration {
+                transform: scale(0.7);
+            }
 
-        .modal .back-btn::before {
-            border-color: #fff;  /* 白色箭头 */
-        }
-
-        .modal .back-btn:hover {
-            background: rgba(51, 51, 51, 1);
+            .footer {
+                padding: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- 首页 -->
-        <div class="page" id="home-page">
-            <div class="background-decoration"></div>
-            <div class="floating-dots">
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
-                <div class="dot"></div>
+    <svg class="decoration" width="100" height="100" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="40" fill="none" stroke="var(--kyee-blue)" stroke-width="2"/>
+        <circle cx="50" cy="50" r="30" fill="none" stroke="var(--kyee-orange)" stroke-width="2"/>
+    </svg>
+    <svg class="decoration" width="100" height="100" viewBox="0 0 100 100">
+        <rect x="20" y="20" width="60" height="60" fill="none" stroke="var(--kyee-blue)" stroke-width="2" transform="rotate(45 50 50)"/>
+    </svg>
+    <svg class="decoration" width="100" height="100" viewBox="0 0 100 100">
+        <polygon points="50,20 80,80 20,80" fill="none" stroke="var(--kyee-orange)" stroke-width="2"/>
+    </svg>
+    <svg class="decoration" width="100" height="100" viewBox="0 0 100 100">
+        <path d="M20,50 Q50,20 80,50 Q50,80 20,50" fill="none" stroke="var(--kyee-blue)" stroke-width="2"/>
+    </svg>
+    
+    <div class="container">
+        <h1 class="title">2025事业部思考</h1>
+        <div class="subtitle">定位：不求大发展，但求小进步</div>
+        
+        <div class="matrix">
+            <div class="matrix-section">
+                <h2 class="matrix-title">存量业务</h2>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td class="product-name">智慧病房线</td>
+                            <td class="product-name">移动护理线</td>
+                        </tr>
+                        <tr>
+                            <td>研发</td>
+                            <td>维持功能稳定</td>
+                            <td>响应现场需求</td>
+                        </tr>
+                        <tr>
+                            <td>销售</td>
+                            <td>暂停</td>
+                            <td>本来就有动力</td>
+                        </tr>
+                        <tr>
+                            <td>售前</td>
+                            <td>暂停</td>
+                            <td>调动项目经理</td>
+                        </tr>
+                        <tr>
+                            <td>实施</td>
+                            <td>维护现有项目</td>
+                            <td>项目奖金</td>
+                        </tr>
+                        <tr>
+                            <td>个性化需求</td>
+                            <td>暂停</td>
+                            <td>西安研发支持</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
-            <div class="content">
-                <div class="logo-section">
-                    <div class="logo-container">
-                        <div class="logo-circle"></div>
-                        <div class="logo-inner-circle"></div>
-                        <div class="logo-pulse"></div>
-                        <img src="./static/images/logo.png" alt="logo" class="logo">
-                    </div>
-                </div>
-                <h1 class="title">疼痛门诊患者小助手</h1>
-                <div class="buttons-container">
-                    <button class="btn" onclick="openChat()">健康教育就医指导</button>
-                    <button class="btn" onclick="navigateTo('assessment-page')">进行疼痛评估</button>
-                </div>
+
+            <div class="matrix-section">
+                <h2 class="matrix-title">增量业务</h2>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td></td>
+                            <td class="product-name">以.net5为核心的信创改造</td>
+                            <td class="product-name">以AI为核心的新产品</td>
+                        </tr>
+                        <tr>
+                            <td>研发</td>
+                            <td>西安研发主导</td>
+                            <td>上海研发主导</td>
+                        </tr>
+                        <tr>
+                            <td>销售</td>
+                            <td>打造为大项目</td>
+                            <td>存在二次销售需求</td>
+                        </tr>
+                        <tr>
+                            <td>售前</td>
+                            <td>现有方式</td>
+                            <td>case by case</td>
+                        </tr>
+                        <tr>
+                            <td>实施</td>
+                            <td>项目奖金</td>
+                            <td>项目奖金</td>
+                        </tr>
+                        <tr>
+                            <td>个性化需求</td>
+                            <td>逐步往产品化过渡</td>
+                            <td>产品化统一管理</td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
 
-        <!-- 康教育页面 -->
-        <div class="page hidden" id="education-page">
-            <div class="back-btn" onclick="navigateTo('home-page')"></div>
-            <div class="iframe-container">
-                <div class="loading-container" id="education-loading">
-                    <div class="loading-spinner"></div>
-                    <div class="loading-text">加载中...</div>
-                    <div class="loading-error" style="display: none; color: #ff4444; margin-top: 20px; text-align: center;">
-                        页面加载失败，请<span class="retry-btn" style="color: #2196F3; cursor: pointer;">重试</span>
-                    </div>
-                </div>
-                <iframe 
-                    src="https://www.hulichatbot.xyz/chat/a1DdYThvLUeU4uwV" 
-                    onload="handleIframeLoad('education-loading')"
-                    onerror="handleIframeError('education-loading')"
-                    id="education-iframe"
-                ></iframe>
+        <div class="qa-section">
+            <div class="qa-card">
+                <h3>售前出差问题</h3>
+                <p><strong>Q：</strong>售前没人想出差的问题怎么解决？</p>
+                <p><strong>A：</strong>项目经理去，去了有好处。考虑是否实行"销售-实施联合体"制度（华为铁三角）；另外低于一定额度的项目，就别叫现场售前了，销售需要能自己搞定</p>
             </div>
-        </div>
 
-        <!-- BPI量表页面 -->
-        <div class="page hidden" id="bpi-page">
-            <div class="back-btn" onclick="navigateTo('assessment-page')"></div>
-            <div class="iframe-container">
-                <div class="loading-container" id="bpi-loading">
-                    <div class="loading-spinner"></div>
-                    <div class="loading-text">加载中...</div>
-                </div>
-                <iframe 
-                    src="https://egewdcr24f.feishu.cn/share/base/form/shrcnXQZ6I3cIWRnZToAyNHbaZg" 
-                    onload="hideLoading('bpi-loading')"
-                ></iframe>
+            <div class="qa-card">
+                <h3>实施积极性问题</h3>
+                <p><strong>Q：</strong>实施没有积极性</p>
+                <p><strong>A：</strong>从首款开始，实施就要能看到钱</p>
             </div>
-        </div>
 
-        <!-- 疼痛评估页面 -->
-        <div class="page hidden" id="assessment-page">
-            <div class="background-decoration"></div>
-            <div class="back-btn" onclick="navigateTo('home-page')"></div>
-            <div class="assessment-content">
-                <h2 class="section-title">通用疼痛评估</h2>
-                <div class="buttons-container">
-                    <button class="btn" onclick="navigateTo('bpi-page')">
-                        简明疼评估表（BPI）
-                    </button>
-                </div>
-
-                <h2 class="section-title">神经病理性疼痛</h2>
-                <div class="buttons-container">
-                    <button class="btn disabled">DN4量表</button>
-                    <button class="btn disabled">painDETECT量表</button>
-                </div>
-
-                <h2 class="section-title">特定部位疼痛</h2>
-                <div class="buttons-container">
-                    <button class="btn disabled">WOMAC量表</button>
-                    <button class="btn disabled">Roland-Morris量表</button>
-                    <button class="btn disabled">颈部功能障碍指数（NDI）</button>
-                </div>
-
-                <h2 class="section-title">心理社会评估</h2>
-                <div class="buttons-container">
-                    <button class="btn disabled">疼痛灾难化量表（PCS）</button>
-                    <button class="btn disabled">疼痛自我效能量表（PSEQ）</button>
-                </div>
+            <div class="qa-card">
+                <h3>项目单价问题</h3>
+                <p><strong>Q：</strong>项目单价不高，但销售想做</p>
+                <p><strong>A：</strong>也不一定不能做，比如更好的支付条件</p>
             </div>
-        </div>
 
-        <!-- 添加模态窗口HTML -->
-        <div id="chatModal" class="modal">
-            <div class="modal-content">
-                <button class="back-btn" onclick="closeChat()"></button>
-                <div class="loading-container" id="chat-loading">
-                    <div class="loading-spinner"></div>
-                    <div class="loading-text">加载中...</div>
-                    <div class="loading-error" style="display: none; color: #ff4444; margin-top: 20px; text-align: center;">
-                        页面加载失败，请<span class="retry-btn" style="color: #2196F3; cursor: pointer;">重试</span>
-                    </div>
-                </div>
-                <iframe 
-                    id="chatFrame"
-                    src=""
-                    onload="handleChatIframeLoad()"
-                    onerror="handleChatIframeError()"
-                ></iframe>
+            <div class="qa-card">
+                <h3>研发资源问题</h3>
+                <p><strong>Q：</strong>昂贵的研发资源，消耗在低效的维护工作上，但老项目确实也需要维护，怎么办？</p>
+                <p><strong>A：</strong>兼顾维护，主要开发。研发如果不是砍掉，那还是要做研发的事。从开源的角度，就是做新产品，打新业务；从节流的角度，就是老产品尽量产品化，降低维护成本</p>
+            </div>
+
+            <div class="qa-card">
+                <h3>标准化与定制化问题</h3>
+                <p><strong>Q：</strong>标准化产品和定制化需求的矛盾如何解决？</p>
+                <p><strong>A：</strong>架构上遵循"标准化产品 + 定制化插件"的思路（e.g. nocobase）</p>
+            </div>
+
+            <div class="qa-card">
+                <h3>新产品开发问题</h3>
+                <p><strong>Q：</strong>开发新产品费时费力、做不下去怎么办？</p>
+                <p><strong>A：</strong>一方面大力推行AI协同的开发，另外甚至新产品可以直接基于低/无代码平台</p>
             </div>
         </div>
     </div>
 
+    <footer class="footer">
+        <img src="https://www.kyee.com.cn/img/logo.png?1735612047" alt="京颐科技" class="logo">
+    </footer>
+
     <script>
-        const TIMEOUT_DURATION = 15000; // 15秒超时
-
-        function handleIframeLoad(loadingId) {
-            clearTimeout(window[loadingId + '_timeout']);
-            hideLoading(loadingId);
-        }
-
-        function handleIframeError(loadingId) {
-            showLoadingError(loadingId);
-        }
-
-        function showLoadingError(loadingId) {
-            const loadingElement = document.getElementById(loadingId);
-            const spinnerElement = loadingElement.querySelector('.loading-spinner');
-            const textElement = loadingElement.querySelector('.loading-text');
-            const errorElement = loadingElement.querySelector('.loading-error');
-            
-            spinnerElement.style.display = 'none';
-            textElement.style.display = 'none';
-            errorElement.style.display = 'block';
-            
-            // 添加重试按钮的点击事件
-            const retryBtn = errorElement.querySelector('.retry-btn');
-            retryBtn.onclick = () => {
-                spinnerElement.style.display = 'block';
-                textElement.style.display = 'block';
-                errorElement.style.display = 'none';
-                
-                const iframe = document.getElementById(loadingId.replace('loading', 'iframe'));
-                iframe.src = iframe.src;
-                startLoadingTimeout(loadingId);
-            };
-        }
-
-        function startLoadingTimeout(loadingId) {
-            window[loadingId + '_timeout'] = setTimeout(() => {
-                showLoadingError(loadingId);
-            }, TIMEOUT_DURATION);
-        }
-
-        function hideLoading(loadingId) {
-            const loadingElement = document.getElementById(loadingId);
-            if (loadingElement) {
-                loadingElement.style.opacity = '0';
-                setTimeout(() => {
-                    loadingElement.style.display = 'none';
-                }, 300);
-            }
-        }
-
-        // 页面加载完成后设置初始状态
-        document.addEventListener('DOMContentLoaded', function() {
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(page => {
-                if (page.id !== 'home-page') {
-                    page.classList.add('hidden');
+        // 创建Intersection Observer实例
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target); // 一旦显示就不再观察
                 }
             });
+        }, {
+            threshold: 0.1 // 当10%的元素可见时触发
         });
 
-        function navigateTo(pageId) {
-            const pages = document.querySelectorAll('.page');
-            pages.forEach(page => {
-                if (page.id === pageId) {
-                    page.classList.remove('hidden');
-                } else {
-                    page.classList.add('hidden');
-                }
-            });
-        }
-
-        // 页面加载完成后为所有 iframe 启动超时计时
-        document.addEventListener('DOMContentLoaded', function() {
-            startLoadingTimeout('education-loading');
-            startLoadingTimeout('bpi-loading');
+        // 观察所有qa-card元素
+        document.querySelectorAll('.qa-card').forEach(card => {
+            observer.observe(card);
         });
-
-        function openChat() {
-            const modal = document.getElementById('chatModal');
-            const loading = document.getElementById('chat-loading');
-            
-            // 显示模态框
-            modal.style.display = 'block';
-            requestAnimationFrame(() => {
-                modal.classList.add('show');
-            });
-            
-            // 显示加载动画
-            loading.style.display = 'flex';
-            
-            // 加载聊天页面
-            document.getElementById('chatFrame').src = 'http://www.hulichatbot.xyz/chat/a1DdYThvLUeU4uwV';
-        }
-
-        function handleChatIframeLoad() {
-            const loading = document.getElementById('chat-loading');
-            loading.style.opacity = '0';
-            setTimeout(() => {
-                loading.style.display = 'none';
-            }, 300);
-        }
-
-        function handleChatIframeError() {
-            const loading = document.getElementById('chat-loading');
-            const spinner = loading.querySelector('.loading-spinner');
-            const text = loading.querySelector('.loading-text');
-            const error = loading.querySelector('.loading-error');
-            
-            spinner.style.display = 'none';
-            text.style.display = 'none';
-            error.style.display = 'block';
-        }
-
-        function closeChat() {
-            const modal = document.getElementById('chatModal');
-            modal.classList.remove('show');
-            setTimeout(() => {
-                modal.style.display = 'none';
-                document.getElementById('chatFrame').src = '';
-                // 重置 loading 状态
-                const loading = document.getElementById('chat-loading');
-                const spinner = loading.querySelector('.loading-spinner');
-                const text = loading.querySelector('.loading-text');
-                const error = loading.querySelector('.loading-error');
-                
-                loading.style.display = 'none';
-                loading.style.opacity = '1';
-                spinner.style.display = 'block';
-                text.style.display = 'block';
-                error.style.display = 'none';
-            }, 300);
-        }
     </script>
 </body>
-</html>
+</html> 
